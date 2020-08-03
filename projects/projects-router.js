@@ -124,4 +124,20 @@ router.delete('/:id', (req, res) => {
 		});
 });
 
+router.get("/:id/resources", (req, res, next) => {
+    const { id } = req.params;
+
+    Projects.resourcesByProject(id)
+        .then(resource => {
+            if (resource.length) {
+                res.json(resource)
+            } else {
+                res.status(404).json({ message: "could not find resources for project" })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Failed to get resources', err });
+        })
+})
+
 module.exports = router;
